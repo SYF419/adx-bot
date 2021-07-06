@@ -5,7 +5,7 @@ import requests
 
 exchange = ccxt.binance()
 
-bars = exchange.fetch_ohlcv('BTC/USDT', timeframe='5m', limit=500)
+bars = exchange.fetch_ohlcv('ETH/USDT', timeframe='5m', limit=500)
 df = pd.DataFrame(bars, columns=['time', 'open', 'high', 'low', 'close', 'volume'])
 
 adx = df.ta.adx(fast=14, slow=6)
@@ -23,30 +23,53 @@ confirmation_row = df.iloc[-3]
 
 print(last_row)
 
-WEBHOOK_URL = "https://discord.com/api/webhooks/861696033436598293/m6-jMeIAQs6va6ePHr_HFK6npwaswkugWDLcSmHWBXYf5POzMgQIJySrO9-3FNd0ZUAj"
-
+WEBHOOK_URL = "https://discord.com/api/webhooks/861576811778146304/aUjaX5H2t3SeZBcCj3ANNu9CCEUu5BXvyF3K2IhtKljvPooDPNzi_d5i4ywMWPvoATZS"
 
 if last_row['ADX_14'] >= 25:
-    if last_row['DMP_14'] > last_row['DMN_14'] and last_row['RSI_14'] <= 35:
-        message = f"Watch for Buy Opportunity: The ADX is {last_row['ADX_14']:.2f}, ${last_row['close']:.4f}, H:{last_row['high']:.2f}, L:{last_row['low']:.2f}, RSI:{last_row['RSI_14']:.0f}"
-    if last_row['DMP_14'] > last_row['DMN_14'] and last_row['RSI_14'] < 35:
-        message = f"Strong Uptrend: The ADX is {last_row['ADX_14']:.2f}, ${last_row['close']:.4f}, H:{last_row['high']:.2f}, L:{last_row['low']:.2f}, RSI:{last_row['RSI_14']:.0f}"
-    if last_row['DMN_14'] > last_row['DMP_14'] and last_row['RSI_14'] >= 65:
-        message = f"Watch for Sell Opportunity: The ADX is {last_row['ADX_14']:.2f}, ${last_row['close']:.4f}, H:{last_row['high']:.2f}, L:{last_row['low']:.2f}, RSI:{last_row['RSI_14']:.0f}"
-    if last_row['DMN_14'] > last_row['DMP_14'] and last_row['RSI_14'] > 65:
-        message = f"Strong Downtrend: The ADX is {last_row['ADX_14']:.2f}, ${last_row['close']:.4f}, H:{last_row['high']:.2f}, L:{last_row['low']:.2f}, RSI:{last_row['RSI_14']:.0f}"    
+    if last_row['DMP_14'] > last_row['DMN_14'] and last_row['RSI_14'] <= 30:
+        message = f"Watch for Buy Opportunity: The ADX is {last_row['ADX_14']:.2f}, ${last_row['close']:.4f}, H:{last_row['high']:.2f}, L:{last_row['low']:.2f}"
+    if last_row['DMP_14'] > last_row['DMN_14'] and last_row['RSI_14'] > 30:
+        message = f"Strong Uptrend: The ADX is {last_row['ADX_14']:.2f}, ${last_row['close']:.4f}, H:{last_row['high']:.2f}, L:{last_row['low']:.2f}"
+    if last_row['DMN_14'] > last_row['DMP_14'] and last_row['RSI_14'] <= 30:
+        message = f"Watch for Sell Opportunity: The ADX is {last_row['ADX_14']:.2f}, ${last_row['close']:.4f}, H:{last_row['high']:.2f}, L:{last_row['low']:.2f}"
+    if last_row['DMN_14'] > last_row['DMP_14'] and last_row['RSI_14'] > 30:
+        message = f"Strong Downtrend: The ADX is {last_row['ADX_14']:.2f}, ${last_row['close']:.4f}, H:{last_row['high']:.2f}, L:{last_row['low']:.2f}"    
 
     payload = {
-        "username": "btc-bot",
+        "username": "eth-bot",
         "content": message
     }
+
     requests.post(WEBHOOK_URL, json=payload)
 
 if last_row['ADX_14'] < 25:
-    message = f"NO TREND: The ADX is {last_row['ADX_14']:.2f}, ${last_row['close']:.4f}, H:{last_row['high']:.2f}, L:{last_row['low']:.2f}, RSI:{last_row['RSI_14']:.0f}"
+    message = f"NO TREND: The ADX is {last_row['ADX_14']:.2f}, ${last_row['close']:.4f}, H:{last_row['high']:.2f}, L:{last_row['low']:.2f}"
+
     payload = {
-        "username": "btc-bot",
-        "content": message}
+        "username": "eth-bot",
+        "content": message
+    }
 
     requests.post(WEBHOOK_URL, json=payload)
 
+if last_row['low'] > comparison_row['low']:
+    message = f"Possible Reversal, moving up"
+     
+    payload = {
+        "username": "eth-bot",
+        "content": message
+    }
+
+if last_row['low'] > confirmation_row['low']:
+    message = f"Reversal confirmed, moving up"
+    payload = {
+        "username": "eth-bot",
+        "content": message
+    }
+
+if last_row['high'] < confirmation_row['low']:
+    message = f"Reversal confirmed, moving up"
+    payload = {
+        "username": "eth-bot",
+        "content": message
+    }
