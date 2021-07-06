@@ -29,11 +29,11 @@ WEBHOOK_URL = "https://discord.com/api/webhooks/861696033436598293/m6-jMeIAQs6va
 if last_row['ADX_14'] >= 25:
     if last_row['DMP_14'] > last_row['DMN_14'] and last_row['RSI_14'] <= 35:
         message = f"Watch for Buy Opportunity: The ADX is {last_row['ADX_14']:.2f}, ${last_row['close']:.4f}, H:{last_row['high']:.2f}, L:{last_row['low']:.2f}, RSI:{last_row['RSI_14']:.0f}"
-    if last_row['DMP_14'] > last_row['DMN_14'] and last_row['RSI_14'] < 35:
+    if last_row['DMP_14'] > last_row['DMN_14'] and last_row['RSI_14'] > 35:
         message = f"Strong Uptrend: The ADX is {last_row['ADX_14']:.2f}, ${last_row['close']:.4f}, H:{last_row['high']:.2f}, L:{last_row['low']:.2f}, RSI:{last_row['RSI_14']:.0f}"
     if last_row['DMN_14'] > last_row['DMP_14'] and last_row['RSI_14'] >= 65:
         message = f"Watch for Sell Opportunity: The ADX is {last_row['ADX_14']:.2f}, ${last_row['close']:.4f}, H:{last_row['high']:.2f}, L:{last_row['low']:.2f}, RSI:{last_row['RSI_14']:.0f}"
-    if last_row['DMN_14'] > last_row['DMP_14'] and last_row['RSI_14'] > 65:
+    if last_row['DMN_14'] > last_row['DMP_14'] and last_row['RSI_14'] < 65:
         message = f"Strong Downtrend: The ADX is {last_row['ADX_14']:.2f}, ${last_row['close']:.4f}, H:{last_row['high']:.2f}, L:{last_row['low']:.2f}, RSI:{last_row['RSI_14']:.0f}"    
 
     payload = {

@@ -1,5 +1,5 @@
 pandas
-pands-ta
+pandas-ta
 yfinance
 ccxt
 requests
